@@ -1,7 +1,11 @@
 # SQL-Restaurant
 
 ## Scenario
-Imagine you're tasked with extracting complex insights from this restaurant management system to improve operational efficiency, enhance customer satisfaction, and optimize menu offerings. You'll need to perform advanced SQL queries to find the total revenue based on the category, total order of the items, who handled the orders and how many orders being handled, and the loyalty points. 
+Imagine you're tasked with extracting complex insights from this restaurant management system to improve operational efficiency, enhance customer satisfaction, and optimize menu offerings. You'll need to perform advanced SQL queries to: 
+1. Find the total revenue based on the category.
+2. Investigate how many item have been ordered.
+3. Determine who handled the orders and how many orders being handled.
+4. Find the loyalty points. 
 
 ## Database and Tables
 ```
@@ -95,4 +99,52 @@ INSERT INTO Orders (order_id, menu_id, customer_id, employee_id, order_date, qua
 (4, 4, 4, 3, '2023-01-25', 2, 'Served');
 
 ```
+## Solutions
+1. Find the total revenue based on the category:
+```
+SELECT m.category, SUM(m.price * o.quantity) AS revenueCategory
+FROM menus m
+JOIN orders o
+ON m.menu_id = o.menu_id
+GROUP BY m.category
+ORDER BY revenueCategory DESC;
+```
+
+![heidisql_OBNlVoSJWd](https://github.com/Kwangsa19/SQL-Restaurant/assets/135963482/3ec9302e-4e82-4d5b-b974-8c0124c6b386)
+
+
+
+2. Investigate how many item have been ordered:
+```
+SELECT m.item_name, SUM(o.quantity) AS OrderedCount
+FROM menus m
+INNER JOIN orders o 
+ON m.menu_id = o.order_id
+GROUP BY m.item_name
+ORDER BY OrderedCount DESC;
+```
+![heidisql_uKVinNUlO6](https://github.com/Kwangsa19/SQL-Restaurant/assets/135963482/e5c663dd-8188-4420-96aa-f98f22192776)
+
+
+3. Determine who handled the orders and how many orders being handled:
+
+```
+SELECT e.name, e.position, COUNT(o.order_id) AS orders_handled
+FROM employees e
+JOIN orders o
+ON e.employee_id = o.order_id
+GROUP BY e.employee_id
+ORDER BY orders_handled DESC;
+```
+
+![heidisql_qBnfOX1CLW](https://github.com/Kwangsa19/SQL-Restaurant/assets/135963482/c9223eaf-9fd8-4a79-8723-e7736d8328f0)
+
+
+4. Find the loyalty points:
+```
+SELECT c.name, c.loyalty_points 
+FROM customers c
+ORDER BY c.loyalty_points DESC;
+```
+![heidisql_kQURoNaswW](https://github.com/Kwangsa19/SQL-Restaurant/assets/135963482/d4ba3a84-790c-421f-aba7-69c770b24e5f)
 
