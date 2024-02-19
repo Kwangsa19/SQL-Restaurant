@@ -109,20 +109,33 @@ ON m.menu_id = o.menu_id
 GROUP BY m.category
 ORDER BY revenueCategory DESC;
 ```
-
+This query will print the total revenue based on the food category.
+* First, I set the initials. `m` stands for `menus`, and `o` stands for `order`. I selected `category` and `revenueCategory`.
+* Second, from `menus` table, I joined it with `orders` table on the condition that `menu_id` from `menus` table matches the `menu_id` on the table `orders`.
+* Third, `SUM` is an aggregate function so I wrote `GROUP BY` and `ORDER BY`.
+* The output:
+  
 ![heidisql_OBNlVoSJWd](https://github.com/Kwangsa19/SQL-Restaurant/assets/135963482/3ec9302e-4e82-4d5b-b974-8c0124c6b386)
 
 
 
 2. Investigate how many item have been ordered:
 ```
-SELECT m.item_name, SUM(o.quantity) AS OrderedCount
-FROM menus m
-INNER JOIN orders o 
-ON m.menu_id = o.order_id
+SELECT m.item_name, SUM(o.quantity) AS TotalOrdered
+FROM menus m 
+JOIN orders o
+ON m.menu_id = o.menu_id
 GROUP BY m.item_name
-ORDER BY OrderedCount DESC;
+ORDER BY TotalOrdered DESC
+LIMIT 5;
 ```
+This query will print the quantity of the items ordered by customers. 
+* First, I selected `item_name` in the table `menus` and `OrderedCount` to appear in the output.
+* Second, I joined `menus` table and `orders` table on the condition that `menu_id` from table menus matches `menu_id` on the table `orders`.
+* Third, I grouped them by `item_name`.
+* Fourth, I sorted them with `ORDER BY TotalOrdered DESC`.
+* The output: 
+
 ![heidisql_uKVinNUlO6](https://github.com/Kwangsa19/SQL-Restaurant/assets/135963482/e5c663dd-8188-4420-96aa-f98f22192776)
 
 
@@ -136,6 +149,12 @@ ON e.employee_id = o.order_id
 GROUP BY e.employee_id
 ORDER BY orders_handled DESC;
 ```
+This query will print who handled the orders and how many orders being handled by the respective employees. 
+* First, I selected `e.name`, `e.position`, and `orders_handled`.
+* Second, I joined `employees` and `orders` tables on the condition `employee_id` from `employees` table matches `order_id` from `orders` table.
+* Third, I grouped by  `e.employee_id`.
+* Fourth, I sorted by `ORDER BY orders_handled DESC;`
+* The output: 
 
 ![heidisql_qBnfOX1CLW](https://github.com/Kwangsa19/SQL-Restaurant/assets/135963482/c9223eaf-9fd8-4a79-8723-e7736d8328f0)
 
@@ -146,5 +165,16 @@ SELECT c.name, c.loyalty_points
 FROM customers c
 ORDER BY c.loyalty_points DESC;
 ```
+This will show loyalty points owned by each customer. 
+* First, I selected `c.name` and `c.loyalty_points` to appear in the output.
+* Second, I selected those columns from `customers` table.
+* Third, I sorted out the `loyalty_points` DESC.
+* The output:
+  
 ![heidisql_kQURoNaswW](https://github.com/Kwangsa19/SQL-Restaurant/assets/135963482/d4ba3a84-790c-421f-aba7-69c770b24e5f)
 
+## Conclusion
+1. Find the total revenue based on the category: `Main_courrse` with `55,95` and `Appetizer` with `17.98`. 
+2. Investigate how many item have been ordered: `caesar salad`, `grilled salmon`, and followed by `spaghethi carbonara` and `magherita pizza` (tied).
+3. Determine who handled the orders and how many orders being handled: `Alicia Johnson`, `Bob Lee`, `Charlie Davis`, and `Diana Adams`. 
+4. Find the top 3 loyalty points for each customer: `Michael Brown`, `Emily Johnson`, and `Jane Smith`.
